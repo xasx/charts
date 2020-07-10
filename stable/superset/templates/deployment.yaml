@@ -21,15 +21,20 @@ spec:
         chart: {{ include "superset.chart" . }}
         release: {{ .Release.Name }}
         heritage: {{ .Release.Service }}
+        {{- with .Values.deploymentLabels }}
+        {{- . | toYaml | nindent 8 }}
+        {{- end }}
       annotations:
         checksum/secrets: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
         {{- with .Values.deploymentAnnotations }}
         {{- . | toYaml | nindent 8 }}
         {{- end }}
     spec:
+      {{- if .Values.securityContext.enabled }}
       securityContext:
-        runAsUser: 1000
-        fsGroup: 1000
+        fsGroup: {{ .Values.securityContext.fsGroup }}
+        runAsUser: {{ .Values.securityContext.runAsUser }}
+      {{- end }}
       volumes:
         - name: superset-configs
           secret:

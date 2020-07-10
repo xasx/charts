@@ -83,9 +83,21 @@ extraArguments:
 ##
 extraEnvFromSecret: ""
 
+## Deployment level labels
+deploymentLabels: {}
+
 ## Deployment level annotations
 ## Useful for passing other third party annotations to interact with eg. kube2iam.
 deploymentAnnotations: {}
+
+
+## Pod Security Context
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+##
+securityContext:
+  enabled: true
+  fsGroup: 1000
+  runAsUser: 1000
 
 persistence:
 
